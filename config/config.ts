@@ -104,4 +104,7 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
+  qiankun: {
+    slave: {}
+   }
 });
