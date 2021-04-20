@@ -1,11 +1,15 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
+import {defineConfig} from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 
-const { REACT_APP_ENV } = process.env;
+const {REACT_APP_ENV} = process.env;
 
-export default defineConfig({
+console.log(process.env.NODE_ENV);
+
+const isPro = process.env.NODE_ENV === 'production';
+
+let config = {
   hash: true,
   antd: {},
   dva: {
@@ -44,7 +48,7 @@ export default defineConfig({
         {
           path: '/',
           component: '../layouts/BasicLayout',
-          authority: ['admin', 'user'],
+          // authority: ['admin', 'user'],
           routes: [
             {
               path: '/',
@@ -61,14 +65,14 @@ export default defineConfig({
               name: 'admin',
               icon: 'crown',
               component: './Admin',
-              authority: ['admin'],
+              // authority: ['admin', 'user'],
               routes: [
                 {
                   path: '/admin/sub-page',
                   name: 'sub-page',
                   icon: 'smile',
                   component: './Welcome',
-                  authority: ['admin'],
+                  // authority: ['admin', 'user'],
                 },
               ],
             },
@@ -104,7 +108,12 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
-  qiankun: {
+};
+
+if (isPro) {
+  config.qiankun = {
     slave: {}
-   }
-});
+  };
+}
+
+export default defineConfig(config);
